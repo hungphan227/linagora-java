@@ -1,5 +1,6 @@
 package com.linagora.coding.exercise;
 
+import com.linagora.coding.exercise.model.PopularProduct;
 import com.linagora.coding.exercise.model.PopularPurchase;
 
 import com.linagora.coding.exercise.model.Product;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class PopularPurchasesController {
@@ -25,12 +27,11 @@ public class PopularPurchasesController {
 
     @GetMapping("/")
     Flux<String> welcome() {
-        return Flux.error(new RuntimeException("Please implement me!!!"));
+        return Flux.just("Hello!");
     }
 
     @GetMapping("/api/recent_purchases/{username}")
-    Flux<Product> usersWithSimilarPurchases(@PathVariable String username) {
-        // TODO implement me...
+    Flux<PopularProduct> usersWithSimilarPurchases(@PathVariable String username) {
         return popularPurchasesService.findPopularPurchases(username);
 //        return Flux.error(new RuntimeException("Please implement me!!!"));
     }
