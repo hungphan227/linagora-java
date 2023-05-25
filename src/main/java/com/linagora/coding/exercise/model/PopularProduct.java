@@ -10,6 +10,8 @@ public class PopularProduct {
     private float price;
     private List<String> recent;
 
+    public PopularProduct() {}
+
     public PopularProduct(UUID id, String name, float price) {
         this.id = id;
         this.name = name;
