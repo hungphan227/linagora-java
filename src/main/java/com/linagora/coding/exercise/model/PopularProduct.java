@@ -1,6 +1,7 @@
 package com.linagora.coding.exercise.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PopularProduct {
@@ -46,7 +47,21 @@ public class PopularProduct {
         return recent;
     }
 
-    public void setRecent(List<String> recent) {
+    public PopularProduct setRecent(List<String> recent) {
         this.recent = recent;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PopularProduct that = (PopularProduct) o;
+        return Float.compare(that.price, price) == 0 && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(recent, that.recent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, recent);
     }
 }

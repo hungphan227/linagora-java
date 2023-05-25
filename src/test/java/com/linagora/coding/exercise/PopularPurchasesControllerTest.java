@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,12 +26,12 @@ import java.util.stream.Collectors;
 class PopularPurchasesControllerTest {
 
     private PopularPurchasesController purchasesController;
-    private RestClient restClient;
+    private RestClientImpl restClient;
 
     @BeforeEach
     void setUp() {
-        restClient = mock(RestClient.class);
-        PopularPurchasesService popularPurchasesService = new PopularPurchasesService(restClient);
+        restClient = mock(RestClientImpl.class);
+        PopularPurchasesServiceImpl popularPurchasesService = new PopularPurchasesServiceImpl(restClient);
         purchasesController = new PopularPurchasesController(popularPurchasesService);
     }
 
@@ -59,9 +60,11 @@ class PopularPurchasesControllerTest {
 
         Flux<PopularProduct> result = purchasesController.usersWithSimilarPurchases(username);
         Mono<List<PopularProduct>> mono = result.collect(Collectors.toList());
+        List<PopularProduct> expected = new ArrayList<>();
+        expected.add(new PopularProduct(productId2, "16", 4).setRecent(Arrays.asList("aaa", "bbb")));
+        expected.add(new PopularProduct(productId1, "15", 3).setRecent(Arrays.asList("aaa")));
         mono.doOnNext(list -> {
-            Assertions.assertEquals(productId2, list.get(0).getId());
-            Assertions.assertEquals(productId1, list.get(1).getId());
+            Assertions.assertEquals(expected, list);
         }).block();
     }
 
